@@ -1,22 +1,38 @@
-import React from 'react';
-import { IndexRoute, Route } from 'react-router';
-import App from './components/App';
-import ChatBox from './containers/ChatBox';
-import NotFound from './components/NotFound';
+import React, { Component } from "react";
+import { connect } from 'react-redux';
+// import { Link, withRouter } from "react-router-dom";
 
-export default function getRoutes(store) {
-  const clearMessages = () => {
-    store.dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-  };
+import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+import importedComponent from 'react-imported-component';
 
-  return (
-    <Route path="/" component={App}>
-      <IndexRoute component={ChatBox} />
+import Home from './components/Home';
+import Loading from './components/Loading';
+
+const AsyncDynamicPAge = importedComponent(
+  () => import(/* webpackChunkName:'DynamicPage' */ './components/DynamicPage'),
+  {
+    LoadingComponent: Loading
+  }
+);
+const AsyncNoMatch = importedComponent(
+  () => import(/* webpackChunkName:'NoMatch' */ './components/NoMatch'),
+  {
+    LoadingComponent: Loading
+  }
+);
 
 
-      <Route path="*" component={NotFound} onLeave={clearMessages} />
-    </Route>
-  );
+export default class Routes extends Component {
+  render() {
+    return (
+      <div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/dynamic" component={AsyncDynamicPAge} />
+          <Route component={AsyncNoMatch} />
+        </Switch>
+      </div>
+    )
+  }
 }
+

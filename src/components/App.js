@@ -40,6 +40,7 @@ const AsyncNoMatch = importedComponent(
     LoadingComponent: Loading
   }
 );
+// import Routes from "../routes"
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
           <Route component={AsyncNoMatch} />
         </Switch>
       </div>
+      {/* <Routes/> */}
     </Router>
   );
 };
